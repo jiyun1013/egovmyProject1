@@ -214,5 +214,9 @@ public class BoardController {
 		return "redirect:/boardList.do";
 	}
 	
-	
+
+	@RequestMapping(value = "/sample.do")
+	public String sample() {
+		return "main/sample";
+	}
 }
