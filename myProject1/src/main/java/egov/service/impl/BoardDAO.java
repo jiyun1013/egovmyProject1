@@ -47,4 +47,16 @@ public class BoardDAO extends EgovAbstractDAO {
 		return list("boardDAO.selectReBoardList", vo);
 	}
 
+	public BoardVO selectReBoardDetail(int unq) {
+		return (BoardVO) select("boardDAO.selectReBoardDetail", unq);
+	}
+
+	public String insertReBoardReply(BoardVO vo) {
+		return (String) insert("boardDAO.insertReBoardReply", vo);
+	}
+
+	public BoardVO selectReboardFid(int unq) {
+		return (BoardVO) select("boardDAO.selectReboardFid", unq);
+	}
+
 }

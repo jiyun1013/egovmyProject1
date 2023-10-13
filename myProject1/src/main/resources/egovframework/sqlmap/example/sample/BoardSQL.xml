@@ -99,8 +99,52 @@
         			, NAME
         			, HITS
         			, to_char(RDATE, 'yyyy-mm-dd') RDATE
+        			, THREAD
         	FROM reboard
-        	ORDER BY UNQ DESC
+        	ORDER BY FID DESC, THREAD ASC
 	</select>
+	
+	<select id="boardDAO.selectReBoardDetail" resultClass="boardVO">
+		SELECT UNQ
+			, TITLE
+			, NAME
+			, CONTENT
+			, to_char(RDATE, 'yyyy-mm-dd') RDATE
+			, FID
+			, THREAD
+		FROM REBOARD
+		WHERE UNQ = #unq#
+	</select>
+	
+	<insert id="boardDAO.insertReBoardReply">
+		INSERT INTO REBOARD(
+							unq
+							, title
+							, pass
+							, name
+							, content
+							, rdate
+							, fid
+							, thread)
+		VALUES(
+			reboard_seq.nextval
+			, '$title$'
+			, '$pass$'
+			, '$name$'
+			, '$content$'
+			, sysdate
+			, (select fid from reboard where unq ='$unq$')
+			, '$thread$'
+			)
+	</insert>
 
+	<select id="boardDAO.selectReboardFid" resultClass="boardVO">
+		SELECT a.* from(
+			SELECT fid, thread
+			FROM reboard
+			WHERE fid = (SELECT fid FROM reboard WHERE unq = '$unq$')
+					and length(thread) = (SELECT length(thread) + 1 FROM reboard WHERE unq = '$unq$')
+			order by thread desc ) a
+		WHERE rownum = 1
+	</select>
 </sqlMap>

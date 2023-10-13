@@ -63,6 +63,36 @@ public class BoardController {
 
 		return msg;
 	}
+	
+	@RequestMapping(value = "/replyWriteSave.do")
+	@ResponseBody
+	public String insertReBoardReply(BoardVO vo) throws Exception {
+		
+		int unq = vo.getUnq();
+		System.out.println("1줄 : "+unq);
+		BoardVO vo1 = boardService.selectReboardFid(unq);
+		
+		String thread = null;
+		String mythread = "";
+		// 값이 비어있을 때 ( 최초의 답글일 때 :: a -> aa)
+		if (vo1 == null) {
+			mythread = vo.getThread() + "a";
+		} else { // 값이 있을 때 (두번째 이상 댓글일 때 :: ac -> ad)
+			thread = vo1.getThread(); // ac -> c -> d ==> "a" + "d"
+			char lastword = thread.charAt(thread.length() - 1);
+			lastword++;
+			mythread = thread.substring(0, thread.length() - 1) + lastword;
+		}
+		
+		String msg="";
+		vo.setThread(mythread);
+		String result = boardService.insertReBoardReply(vo);
+		if(result == null) {
+			msg ="ok";
+		}
+		
+		return msg;
+	}
 
 	@RequestMapping(value = "/boardList.do")
 	public String selectBoardList(BoardVO vo, ModelMap model) throws Exception {
@@ -124,6 +154,33 @@ public class BoardController {
 		int cnt = boardService.updateBoardHits(unq);
 
 		return "board/boardDetail";
+	}
+	
+	@RequestMapping(value = "/reboardDetail.do")
+	public String selectReBoardDetail(int unq, ModelMap model) throws Exception {
+
+		BoardVO vo = boardService.selectReBoardDetail(unq);
+
+		String content = vo.getContent();
+		content = content.replace("\n", "<br>");
+		content = content.replace(" ", "&nbsp;");
+		vo.setContent(content);
+
+		model.addAttribute("vo", vo);
+
+		// 조회수 증가
+//		int cnt = boardService.updateReBoardHits(unq);
+
+		return "board/reboardDetail";
+	}
+	
+	@RequestMapping(value = "/replyWrite.do")
+	public String replyWrite(BoardVO vo, ModelMap model) {
+		
+		model.addAttribute("unq", vo.getUnq());
+		model.addAttribute("thread", vo.getThread());
+		
+		return "board/replyWrite";
 	}
 
 	@RequestMapping(value = "/boardPassWrite.do")

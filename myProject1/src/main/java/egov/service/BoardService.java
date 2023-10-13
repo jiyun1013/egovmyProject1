@@ -13,6 +13,12 @@ public interface BoardService {
 	//답글게시판 저장처리
 	String insertReBoard(BoardVO vo) throws Exception;
 	
+	//답글게시판 답글 저장처리
+	String insertReBoardReply(BoardVO vo) throws Exception;
+	
+	//답글 게시판 최종답글의 데이터값 얻기(fid, thread)
+	BoardVO selectReboardFid(int unq) throws Exception;
+	
 	/* 
 	 * 게시판 목록화면
 	 */
@@ -30,6 +36,9 @@ public interface BoardService {
 	 * 게시글 상세보기
 	 */
 	BoardVO selectBoardDetail(int unq) throws Exception;
+	
+	//답글 게시판 상세보기
+	BoardVO selectReBoardDetail(int unq) throws Exception;
 	
 	/*
 	 * 조회수 증가

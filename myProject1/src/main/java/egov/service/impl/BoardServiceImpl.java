@@ -17,6 +17,7 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public String insertBoard(BoardVO vo) throws Exception {
+		//						    () <- SQL문에 보낼 값
 		return boardDAO.insertBoard(vo);
 	}
 
@@ -58,6 +59,21 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public List<?> selectReBoardList(BoardVO vo) throws Exception {
 		return boardDAO.selectReBoardList(vo);
+	}
+
+	@Override
+	public BoardVO selectReBoardDetail(int unq) throws Exception {
+		return boardDAO.selectReBoardDetail(unq);
+	}
+
+	@Override
+	public String insertReBoardReply(BoardVO vo) throws Exception {
+		return boardDAO.insertReBoardReply(vo);
+	}
+
+	@Override
+	public BoardVO selectReboardFid(int unq) throws Exception {
+		return boardDAO.selectReboardFid(unq);
 	}
 
 
